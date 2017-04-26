@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <ventaquil/OpenCL/Device.h>
 #include <ventaquil/OpenCL/Helper.h>
 #include <ventaquil/OpenCL/Platform.h>
 #include <iostream>
@@ -13,16 +14,26 @@ int main(void) {
     for (cl_uint i = 0; i < platforms_number; ++i) {
         ventaquil::OpenCL::Platform platform(platforms[i]);
 
-        char *name = platform.getName();
+        char *platform_name = platform.getName();
 
-        std::cout << " Platform " << (i + 1) << "-th - " << name << std::endl;
         cl_uint devices_number = ventaquil::OpenCL::Helper::getDevicesNumber(platforms[i]);
 
-        std::cout << "  " << devices_number << " device" << (devices_number != 1 ? "s" : "") << std::endl;
+        std::cout << "  Platform " << (i + 1) << "-th - " << platform_name << " (" << devices_number << " device"
+                  << (devices_number != 1 ? "s" : "") << ")" << std::endl;
 
-        ventaquil::OpenCL::Helper::getDevicesIds(platforms[i]);
+        cl_device_id *devices = ventaquil::OpenCL::Helper::getDevicesIds(platforms[i]);
 
-        delete [] name;
+        for (cl_uint j = 0; j < devices_number; ++j) {
+            ventaquil::OpenCL::Device device(devices[j]);
+
+            char *device_name = device.getName();
+
+            std::cout << "    Device " << (j + 1) << "-th - " << device_name << std::endl;
+
+            delete[] device_name;
+        }
+
+        delete[] platform_name;
     }
 
     return EXIT_SUCCESS;
