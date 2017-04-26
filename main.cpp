@@ -33,8 +33,12 @@ int main(void) {
             delete[] device_name;
         }
 
+        delete[] devices;
+
         delete[] platform_name;
     }
+
+    delete[] platforms;
 
     return EXIT_SUCCESS;
 }
