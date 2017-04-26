@@ -14,6 +14,10 @@ namespace ventaquil {
 
                 cl_device_id getId(void);
 
+                cl_uint getMaxClockFrequency(void);
+
+                cl_uint getMaxComputeUnits(void);
+
                 char *getName(void);
         };
     }

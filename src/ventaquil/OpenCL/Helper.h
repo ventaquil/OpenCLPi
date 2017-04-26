@@ -7,6 +7,8 @@ namespace ventaquil {
     namespace OpenCL {
         class Helper {
             public:
+                static cl_device_id getBestDevice(cl_device_type type = CL_DEVICE_TYPE_GPU);
+
                 static cl_device_id *getDevicesIds(cl_platform_id platform_id, cl_device_type type = CL_DEVICE_TYPE_ALL, cl_uint max = 0);
 
                 static cl_uint getDevicesNumber(cl_platform_id platform_id, cl_device_type type = CL_DEVICE_TYPE_ALL);

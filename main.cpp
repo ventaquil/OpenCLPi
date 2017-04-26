@@ -40,5 +40,19 @@ int main(void) {
 
     delete[] platforms;
 
+    std::cout << std::endl;
+
+    {
+        cl_device_id device_id = ventaquil::OpenCL::Helper::getBestDevice();
+
+        ventaquil::OpenCL::Device device(device_id);
+
+        char *device_name = device.getName();
+
+        std::cout << "Best device - " << device_name << std::endl;
+
+        delete[] device_name;
+    }
+
     return EXIT_SUCCESS;
 }
