@@ -16,7 +16,7 @@ int main(void) {
 
         char *platform_name = platform.getName();
 
-        cl_uint devices_number = ventaquil::OpenCL::Helper::getDevicesNumber(platforms[i]);
+        cl_uint devices_number = platform.getDevicesNumber();
 
         std::cout << "  Platform " << (i + 1) << "-th - " << platform_name << " (" << devices_number << " device"
                   << (devices_number != 1 ? "s" : "") << ")" << std::endl;

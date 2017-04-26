@@ -9,6 +9,10 @@ namespace ventaquil {
             return Helper::getDevicesIds(id, type, max);
         }
 
+        cl_uint Platform::getDevicesNumber(cl_device_type type) {
+            return Helper::getDevicesNumber(id, type);
+        }
+
         cl_platform_id Platform::getId(void) {
             return id;
         }
