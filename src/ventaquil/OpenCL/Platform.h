@@ -12,6 +12,8 @@ namespace ventaquil {
             public:
                 Platform(cl_platform_id id);
 
+                cl_device_id *getDevicesIds(cl_device_type type = CL_DEVICE_TYPE_ALL, cl_uint max = 0);
+
                 cl_platform_id getId(void);
 
                 char *getName(void);
