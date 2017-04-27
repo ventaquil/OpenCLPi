@@ -1,4 +1,5 @@
 #include "Device.h"
+#include "Platform.h"
 
 namespace ventaquil {
     namespace OpenCL {
@@ -16,6 +17,41 @@ namespace ventaquil {
             cl_device_id device_id = getId();
 
             return createContext(properties, 1, &device_id, callback, user_data);
+        }
+
+        cl_device_id Device::getBestDeviceId(cl_device_type type) {
+            cl_device_id best_device_id;
+
+            cl_platform_id *platforms = Platform::getIds();
+
+            for (cl_uint i = 0, max = 0, platforms_number = Platform::getNumber(); i < platforms_number; ++i) {
+                Platform platform(platforms[i]);
+
+                cl_device_id *devices = platform.getDevicesIds(type);
+
+                for (cl_uint j = 0, devices_number = platform.getDevicesNumber(type); j < devices_number; ++j) {
+                    Device device(devices[j]);
+
+                    cl_uint value =
+                            device.getMaxComputeUnits() * device.getMaxClockFrequency() * device.getMaxWorkGroupSize();
+
+                    if (value > max) {
+                        max = value;
+
+                        best_device_id = device.getId();
+                    }
+                }
+
+                delete[] devices;
+            }
+
+            delete[] platforms;
+
+            return best_device_id;
+        }
+
+        Device Device::getBestDevice(cl_device_type type) {
+            return Device(getBestDeviceId(type));
         }
 
         cl_device_id Device::getId(void) {
@@ -47,6 +83,14 @@ namespace ventaquil {
             cl_uint max_compute_units;
 
             clGetDeviceInfo(getId(), CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(max_compute_units), &max_compute_units, NULL);
+
+            return max_compute_units;
+        }
+
+        cl_uint Device::getMaxWorkGroupSize(void) {
+            cl_uint max_compute_units;
+
+            clGetDeviceInfo(getId(), CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(max_compute_units), &max_compute_units, NULL);
 
             return max_compute_units;
         }
