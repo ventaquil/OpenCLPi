@@ -8,6 +8,8 @@ set(SOURCE_FILES main.cpp
     src/ventaquil/OpenCL/Kernel.cpp
     src/ventaquil/OpenCL/Platform.cpp
     src/ventaquil/OpenCL/Queue.cpp
+
+    src/ventaquil/OpenCLPi/BBPFormula.cpp
 )
 
 find_package(OpenCL REQUIRED)
