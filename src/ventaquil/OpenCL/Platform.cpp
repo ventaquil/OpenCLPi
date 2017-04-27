@@ -1,20 +1,32 @@
 #include "Platform.h"
-#include "Helper.h"
+#include "Device.h"
 
 namespace ventaquil {
     namespace OpenCL {
         Platform::Platform(cl_platform_id id) : id(id) {}
 
         cl_device_id* Platform::getDevicesIds(cl_device_type type, cl_uint max) {
-            return Helper::getDevicesIds(getId(), type, max);
+            return Device::getIds(getId(), type, max);
         }
 
         cl_uint Platform::getDevicesNumber(cl_device_type type) {
-            return Helper::getDevicesNumber(getId(), type);
+            return Device::getNumber(getId(), type);
         }
 
         cl_platform_id Platform::getId(void) {
             return id;
+        }
+
+        cl_platform_id *Platform::getIds(cl_uint max) {
+            cl_uint number = getNumber();
+
+            number = ((number > max) && (max != 0)) ? max : number;
+
+            cl_platform_id *platforms = new cl_platform_id[number];
+
+            clGetPlatformIDs(number, platforms, NULL);
+
+            return platforms;
         }
 
         char *Platform::getName(void) {
@@ -27,6 +39,14 @@ namespace ventaquil {
             clGetPlatformInfo(getId(), CL_PLATFORM_NAME, length, name, NULL);
 
             return name;
+        }
+
+        cl_uint Platform::getNumber(void) {
+            cl_uint number;
+
+            clGetPlatformIDs(0, NULL, &number);
+
+            return number;
         }
     }
 }

@@ -6,7 +6,7 @@
 namespace ventaquil {
     namespace OpenCL {
         class Platform {
-            protected:
+            private:
                 cl_platform_id id;
 
             public:
@@ -18,7 +18,11 @@ namespace ventaquil {
 
                 cl_platform_id getId(void);
 
+                static cl_platform_id *getIds(cl_uint max = 0);
+
                 char *getName(void);
+
+                static cl_uint getNumber(void);
         };
     }
 }
