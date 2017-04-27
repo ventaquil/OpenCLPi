@@ -1,6 +1,8 @@
 #ifndef OPENCLPI_BBPFORMULA_H
 #define OPENCLPI_BBPFORMULA_H
 
-void BBPFormula(void);
+#include <CL/cl.h>
+
+double BBPFormula(cl_uint s, cl_uint b, cl_uint m, cl_int *A, cl_uint k = 8);
 
 #endif //OPENCLPI_BBPFORMULA_H
