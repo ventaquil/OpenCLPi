@@ -2,12 +2,13 @@
 #define OPENCLPI_KERNEL_H
 
 #include <CL/cl.h>
+#include "Catcher.h"
 #include <string>
 #include <fstream>
 
 namespace ventaquil {
     namespace OpenCL {
-        class Kernel {
+        class Kernel : protected Catcher {
             private:
                 cl_kernel kernel;
 

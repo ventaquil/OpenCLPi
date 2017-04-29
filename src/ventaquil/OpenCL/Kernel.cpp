@@ -30,23 +30,42 @@ namespace ventaquil {
                 (char *) filename.c_str(), kernel_name, context, device_id) {}
 
         Kernel::~Kernel(void) {
-            clReleaseProgram(program);
-            clReleaseKernel(kernel);
+            {
+                cl_int error_code = clReleaseProgram(program);
+
+                test(error_code, "Release program fail");
+            }
+
+            {
+                cl_int error_code = clReleaseKernel(kernel);
+
+                test(error_code, "Release kernel fail");
+            }
         }
 
         void Kernel::buildProgram(cl_program program, cl_device_id device_id) {
-            clBuildProgram(program, 1, &device_id, NULL, NULL, NULL); // @TODO err code
+            cl_int error_code = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+
+            test(error_code, "Build program fail");
         }
 
         cl_kernel Kernel::createKernel(cl_program program, char *kernel_name) {
-            cl_kernel kernel = clCreateKernel(program, kernel_name, NULL); // @TODO err code
+            cl_int error_code;
+
+            cl_kernel kernel = clCreateKernel(program, kernel_name, &error_code);
+
+            test(error_code, "Create kernel fail");
 
             return kernel;
         }
 
         cl_program Kernel::createProgram(cl_context context, char *filecontent, size_t filesize, cl_uint count) {
+            cl_int error_code;
+
             cl_program program = clCreateProgramWithSource(context, count, (const char **) &filecontent,
-                                                           (const size_t *) &filesize, NULL); // @TODO err code
+                                                           (const size_t *) &filesize, &error_code);
+
+            test(error_code, "Create program with source fail");
 
             return program;
         }
@@ -60,7 +79,9 @@ namespace ventaquil {
         }
 
         Kernel *Kernel::setArgument(cl_uint index, size_t size, void *value) {
-            clSetKernelArg(getKernel(), index, size, value); // @TODO err code
+            cl_int error_code = clSetKernelArg(getKernel(), index, size, value);
+
+            test(error_code, "Set kernel argument fail");
 
             return this;
         }
