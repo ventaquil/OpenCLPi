@@ -1,4 +1,4 @@
-__kernel void bbpformula_step(const unsigned int s, const unsigned int m, const __global int *A, __global float *R)
+__kernel void bbpformula_first_step(const unsigned int s, const unsigned int m, const __global int *A, __global float *R)
 {
     unsigned int identifier = get_global_id(0);
 

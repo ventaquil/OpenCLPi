@@ -16,7 +16,7 @@ int main(void) {
         const cl_uint s = 1, b = 16, m = 8;
         const cl_int A[8] = {4, 0, 0, -2, -1, -1, 0, 0};
 
-        double pi = BBPFormula(s, b, m, (cl_int *) A, k);
+        float pi = BBPFormula(s, b, m, (cl_int *) A, k);
 
         std::cout << "Pi " << std::setprecision(k) << pi << std::endl;
 
