@@ -7,7 +7,7 @@
 namespace ventaquil {
     namespace OpenCL {
         class Catcher {
-            protected:
+            public:
                 static void test(cl_int code, char *message);
 
                 static void test(cl_int code, const char *message);
