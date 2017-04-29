@@ -57,8 +57,7 @@ int main(void) {
                 ventaquil::OpenCL::Context context = device.createContext(NULL, NULL, NULL);
 
                 {
-                    ventaquil::OpenCL::Queue queue(context.getContext(), device.getId(),
-                                                   CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE);
+                    ventaquil::OpenCL::Queue queue(context.getContext(), device.getId(), 0);
                 }
             }
         }

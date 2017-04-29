@@ -2,10 +2,11 @@
 #define OPENCLPI_QUEUE_H
 
 #include <Cl/cl.h>
+#include "Catcher.h"
 
 namespace ventaquil {
     namespace OpenCL {
-        class Queue {
+        class Queue : protected Catcher {
             private:
                 cl_command_queue queue;
 
