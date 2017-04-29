@@ -2,10 +2,11 @@
 #define OPENCLPI_PLATFORM_H
 
 #include <CL/cl.h>
+#include "Catcher.h"
 
 namespace ventaquil {
     namespace OpenCL {
-        class Platform {
+        class Platform : protected Catcher {
             private:
                 cl_platform_id id;
 

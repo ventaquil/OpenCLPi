@@ -24,7 +24,11 @@ namespace ventaquil {
 
             cl_platform_id *platforms = new cl_platform_id[number];
 
-            clGetPlatformIDs(number, platforms, NULL);
+            {
+                cl_int error_code = clGetPlatformIDs(number, platforms, NULL);
+
+                test(error_code, "Get platforms' ids fail");
+            }
 
             return platforms;
         }
@@ -32,11 +36,19 @@ namespace ventaquil {
         char *Platform::getName(void) {
             size_t length;
 
-            clGetPlatformInfo(getId(), CL_PLATFORM_NAME, 0, NULL, &length);
+            {
+                cl_int error_code = clGetPlatformInfo(getId(), CL_PLATFORM_NAME, 0, NULL, &length);
+
+                test(error_code, "Get platform's name size fail");
+            }
 
             char *name = new char[length];
 
-            clGetPlatformInfo(getId(), CL_PLATFORM_NAME, length, name, NULL);
+            {
+                cl_int error_code = clGetPlatformInfo(getId(), CL_PLATFORM_NAME, length, name, NULL);
+
+                test(error_code, "Get platform's name fail");
+            }
 
             return name;
         }
@@ -44,7 +56,11 @@ namespace ventaquil {
         cl_uint Platform::getNumber(void) {
             cl_uint number;
 
-            clGetPlatformIDs(0, NULL, &number);
+            {
+                cl_int error_code = clGetPlatformIDs(0, NULL, &number);
+
+                test(error_code, "Get platforms number fail");
+            }
 
             return number;
         }

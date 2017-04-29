@@ -8,11 +8,11 @@ namespace ventaquil {
     namespace OpenCL {
         class Catcher {
             protected:
-                void test(cl_int code, char *message);
+                static void test(cl_int code, char *message);
 
-                void test(cl_int code, const char *message);
+                static void test(cl_int code, const char *message);
 
-                void test(cl_int code, std::string message);
+                static void test(cl_int code, std::string message);
         };
     }
 }
