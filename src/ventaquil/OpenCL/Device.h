@@ -2,11 +2,12 @@
 #define OPENCLPI_DEVICE_H
 
 #include <CL/cl.h>
+#include "Catcher.h"
 #include "Context.h"
 
 namespace ventaquil {
     namespace OpenCL {
-        class Device {
+        class Device : protected Catcher {
             private:
                 cl_device_id id;
 

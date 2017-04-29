@@ -27,22 +27,25 @@ namespace ventaquil {
             for (cl_uint i = 0, max = 0, platforms_number = Platform::getNumber(); i < platforms_number; ++i) {
                 Platform platform(platforms[i]);
 
-                cl_device_id *devices = platform.getDevicesIds(type);
+                cl_uint devices_number = platform.getDevicesNumber(type);
 
-                for (cl_uint j = 0, devices_number = platform.getDevicesNumber(type); j < devices_number; ++j) {
-                    Device device(devices[j]);
+                if (devices_number > 0) {
+                    cl_device_id *devices = platform.getDevicesIds(type);
 
-                    cl_uint value =
-                            device.getMaxComputeUnits() * device.getMaxClockFrequency() * device.getMaxWorkGroupSize();
+                    for (cl_uint j = 0; j < devices_number; ++j) {
+                        Device device(devices[j]);
 
-                    if (value > max) {
-                        max = value;
+                        cl_uint value = device.getMaxComputeUnits() * device.getMaxClockFrequency();
 
-                        best_device_id = device.getId();
+                        if (value > max) {
+                            max = value;
+
+                            best_device_id = device.getId();
+                        }
                     }
-                }
 
-                delete[] devices;
+                    delete[] devices;
+                }
             }
 
             delete[] platforms;
@@ -65,7 +68,11 @@ namespace ventaquil {
 
             cl_device_id *devices = new cl_device_id[number];
 
-            clGetDeviceIDs(platform_id, type, number, devices, NULL);
+            {
+                cl_int error_code = clGetDeviceIDs(platform_id, type, number, devices, NULL);
+
+                test(error_code, "Get devices' ids fail");
+            }
 
             return devices;
         }
@@ -73,8 +80,12 @@ namespace ventaquil {
         cl_uint Device::getMaxClockFrequency(void) {
             cl_uint max_clock_frequency;
 
-            clGetDeviceInfo(getId(), CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(max_clock_frequency), &max_clock_frequency,
-                            NULL);
+            {
+                cl_int error_code = clGetDeviceInfo(getId(), CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(max_clock_frequency),
+                                                    &max_clock_frequency, NULL);
+
+                test(error_code, "Get device's max cock frequency fail");
+            }
 
             return max_clock_frequency;
         }
@@ -82,15 +93,12 @@ namespace ventaquil {
         cl_uint Device::getMaxComputeUnits(void) {
             cl_uint max_compute_units;
 
-            clGetDeviceInfo(getId(), CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(max_compute_units), &max_compute_units, NULL);
+            {
+                cl_int error_code = clGetDeviceInfo(getId(), CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(max_compute_units),
+                                                    &max_compute_units, NULL);
 
-            return max_compute_units;
-        }
-
-        cl_uint Device::getMaxWorkGroupSize(void) {
-            cl_uint max_compute_units;
-
-            clGetDeviceInfo(getId(), CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(max_compute_units), &max_compute_units, NULL);
+                test(error_code, "Get device's max compute units fail");
+            }
 
             return max_compute_units;
         }
@@ -98,11 +106,19 @@ namespace ventaquil {
         char *Device::getName(void) {
             size_t length;
 
-            clGetDeviceInfo(getId(), CL_DEVICE_NAME, 0, NULL, &length);
+            {
+                cl_int error_code = clGetDeviceInfo(getId(), CL_DEVICE_NAME, 0, NULL, &length);
+
+                test(error_code, "Get device's name size fail");
+            }
 
             char *name = new char[length];
 
-            clGetDeviceInfo(getId(), CL_DEVICE_NAME, length, name, NULL);
+            {
+                cl_int error_code = clGetDeviceInfo(getId(), CL_DEVICE_NAME, length, name, NULL);
+
+                test(error_code, "Get device's name fail");
+            }
 
             return name;
         }
@@ -110,7 +126,15 @@ namespace ventaquil {
         cl_uint Device::getNumber(cl_platform_id platform_id, cl_device_type type) {
             cl_uint number;
 
-            clGetDeviceIDs(platform_id, type, 0, NULL, &number);
+            {
+                cl_int error_code = clGetDeviceIDs(platform_id, type, 0, NULL, &number);
+
+                if (error_code != CL_DEVICE_NOT_FOUND) { // If devices are not found then do not throw exception
+                    test(error_code, "Get devices number fail");
+                } else {
+                    number = 0;
+                }
+            }
 
             return number;
         }
