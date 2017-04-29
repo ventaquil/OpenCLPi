@@ -2,10 +2,11 @@
 #define OPENCLPI_CONTEXT_H
 
 #include <CL/cl.h>
+#include "Catcher.h"
 
 namespace ventaquil {
     namespace OpenCL {
-        class Context {
+        class Context : protected Catcher {
             private:
                 cl_context context;
 
