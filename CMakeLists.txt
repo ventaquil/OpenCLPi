@@ -20,4 +20,4 @@ add_executable(main ${SOURCE_FILES})
 
 target_link_libraries(main OpenCL::OpenCL)
 
-configure_file(resrc/bbp-formula.cl resrc/bbp-formula.cl @ONLY)
+configure_file(resrc/bbpformula.cl resrc/bbpformula.cl @ONLY)

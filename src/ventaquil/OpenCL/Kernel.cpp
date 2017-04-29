@@ -1,4 +1,5 @@
 #include "Kernel.h"
+#include <sstream>
 
 namespace ventaquil {
     namespace OpenCL {
@@ -81,7 +82,11 @@ namespace ventaquil {
         Kernel *Kernel::setArgument(cl_uint index, size_t size, void *value) {
             cl_int error_code = clSetKernelArg(getKernel(), index, size, value);
 
-            test(error_code, "Set kernel argument fail");
+            std::stringstream stringstream;
+
+            stringstream << "Set kernel argument " << index << " fail";
+
+            test(error_code, stringstream.str());
 
             return this;
         }
